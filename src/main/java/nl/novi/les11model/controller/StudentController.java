@@ -1,17 +1,15 @@
 package nl.novi.les11model.controller;
 
+import jakarta.validation.Valid;
 import nl.novi.les11model.dto.StudentDto;
-import nl.novi.les11model.model.Student;
-import nl.novi.les11model.repository.StudentRepository;
 import nl.novi.les11model.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("students")
@@ -19,11 +17,10 @@ public class StudentController {
 
     private final StudentService service;
 
-//    @Autowired
-//    StudentRepository repos;
-
     public StudentController(StudentService service){
+
         this.service = service;
+
     }
 
     @GetMapping("/{studentNr}")
@@ -34,19 +31,31 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDto> createStudent(@RequestBody StudentDto studentDto){
-        repos.save(s);
+    public ResponseEntity<Object> createStudent(@Valid @RequestBody StudentDto sdto, BindingResult br) {
 
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + s.getStudentNr()).toUriString());
+        if (br.hasFieldErrors()){
+            StringBuilder sb = new StringBuilder();
+            for (FieldError fe : br.getFieldErrors()){
+                sb.append(fe.getField() + ": ");
+                sb.append(fe.getDefaultMessage() + "\n");
+            }
+            return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseEntity.created(uri).body(s);
+        Long studentNr = service.createStudent(sdto);
+        sdto.studentNr = studentNr;
+
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + studentNr).toUriString());
+
+        return ResponseEntity.created(uri).body(sdto);
+
     }
 
-    @GetMapping("/nameSearch")
-    public ResponseEntity<Iterable<StudentDto>> getStudents(@RequestParam String firstName){
-
-        return ResponseEntity.ok(repos.findByFirstNameContaining(firstName));
-    }
+//    @GetMapping("/nameSearch")
+//    public ResponseEntity<Iterable<StudentDto>> getStudents(@RequestParam String firstName){
+//
+//        return ResponseEntity.ok(Student.findByFirstNameContaining(firstName));
+//    }
 
 //    @PutMapping("/{studentNr}")
 //    public ResponseEntity<Student> updateStudent(@PathVariable Long studentNr, @RequestBody Student updatedStudent) {

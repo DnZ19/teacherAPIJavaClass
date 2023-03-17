@@ -10,6 +10,11 @@ public class Course {
     private String title;
     private int sp;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+
+
     public Teacher getTeacher() {
         return teacher;
     }
@@ -17,10 +22,6 @@ public class Course {
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
 
     public Long getId() {
         return id;

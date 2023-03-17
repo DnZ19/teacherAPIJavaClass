@@ -1,7 +1,6 @@
 package nl.novi.les11model.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,9 +9,9 @@ import java.util.List;
 public class Teacher {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+    private Long id;
     private String firstName;
     private String lastName;
     private LocalDate dob;
@@ -20,19 +19,19 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     private List<Course> courses;
 
-    @ManyToMany(mappedBy = "teacher")
-    private List<Student> students;
+    @OneToMany(mappedBy = "teacher")
+    private List<TeachersStudents> teachersStudents;
+
+    public List<TeachersStudents> getTeachersStudents() {
+        return teachersStudents;
+    }
+
+    public void setTeachersStudents(List<TeachersStudents> teachersStudents) {
+        this.teachersStudents = teachersStudents;
+    }
 
     public List<Course> getCourses() {
         return courses;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
     }
 
     public void setCourses(List<Course> courses) {

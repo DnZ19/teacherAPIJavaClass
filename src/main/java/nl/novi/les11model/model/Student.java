@@ -2,27 +2,30 @@ package nl.novi.les11model.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
+
 @Entity
 @Table(name = "students")
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long studentNr;
     private String firstName;
     private String lastName;
     private Long phoneNumber;
 
-    @ManyToMany
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
+    @OneToMany(mappedBy = "student")
+    private List<TeachersStudents> teachersStudents;
 
-    public Teacher getTeacher() {
-        return teacher;
+    public List<TeachersStudents> getTeachersStudents() {
+        return teachersStudents;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeachersStudents(List<TeachersStudents> teachersStudents) {
+        this.teachersStudents = teachersStudents;
     }
 
     public Long getPhoneNumber() {

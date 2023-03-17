@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class TeacherService {
 
     //nette manier ipv autowired
-
     private final TeacherRepository repos;
 
     public TeacherService(TeacherRepository repos) {
@@ -35,9 +34,7 @@ public class TeacherService {
 
     public TeacherDto getTeacher(Long id) {
         Teacher t = repos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Teacher not found"));
-
         //map naar dto
-
         TeacherDto tdto = new TeacherDto();
         tdto.id = t.getId();
         tdto.firstName = t.getFirstName();
