@@ -2,7 +2,9 @@ package nl.novi.les11model.controller;
 
 import jakarta.validation.Valid;
 import nl.novi.les11model.dto.TeacherDto;
+import nl.novi.les11model.model.TeachersStudents;
 import nl.novi.les11model.service.TeacherService;
+import nl.novi.les11model.service.TeachersStudentsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,13 +23,6 @@ public class TeacherController {
         
         this.service = service;
         
-    }
-
-    @GetMapping("/{teacherId}")
-    public ResponseEntity<TeacherDto> getTeacher(@PathVariable Long teacherId){
-        TeacherDto tdto = service.getTeacher(teacherId);
-
-        return ResponseEntity.ok(tdto);
     }
 
     @PostMapping
@@ -50,6 +45,13 @@ public class TeacherController {
 
         return ResponseEntity.created(uri).body(tdto);
 
+    }
+
+    @GetMapping("/{teacherId}")
+    public ResponseEntity<TeacherDto> getTeacher(@PathVariable Long teacherId){
+        TeacherDto tdto = service.getTeacher(teacherId);
+
+        return ResponseEntity.ok(tdto);
     }
 
 //    @GetMapping("/before")

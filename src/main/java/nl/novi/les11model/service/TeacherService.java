@@ -4,7 +4,9 @@ import nl.novi.les11model.dto.TeacherDto;
 import nl.novi.les11model.exception.ResourceNotFoundException;
 import nl.novi.les11model.model.Course;
 import nl.novi.les11model.model.Teacher;
+import nl.novi.les11model.model.TeachersStudents;
 import nl.novi.les11model.repository.TeacherRepository;
+import nl.novi.les11model.repository.TeachersStudentsRepository;
 import org.springframework.stereotype.Service;
 
 @Service

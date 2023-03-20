@@ -25,16 +25,16 @@ public class TeachersStudents {
         this.id = id;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public Teacher getTeacher(Teacher teacher) {
+        return this.teacher;
     }
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 
-    public Student getStudent() {
-        return student;
+    public Student getStudent(Student student) {
+        return this.student;
     }
 
     public void setStudent(Student student) {
