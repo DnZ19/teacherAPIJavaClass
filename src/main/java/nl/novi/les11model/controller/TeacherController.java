@@ -23,9 +23,9 @@ public class TeacherController {
         
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TeacherDto> getTeacher(@PathVariable Long id){
-        TeacherDto tdto = service.getTeacher(id);
+    @GetMapping("/{teacherId}")
+    public ResponseEntity<TeacherDto> getTeacher(@PathVariable Long teacherId){
+        TeacherDto tdto = service.getTeacher(teacherId);
 
         return ResponseEntity.ok(tdto);
     }
@@ -42,11 +42,11 @@ public class TeacherController {
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
-        Long id = service.createTeacher(tdto);
-        tdto.id = id;
+        Long teacherId = service.createTeacher(tdto);
+        tdto.teacherId = teacherId;
 
 
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + id).toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + teacherId).toUriString());
 
         return ResponseEntity.created(uri).body(tdto);
 

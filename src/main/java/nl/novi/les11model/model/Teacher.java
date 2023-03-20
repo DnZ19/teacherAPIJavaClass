@@ -11,24 +11,16 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
+    private Long teacherId;
     private String firstName;
     private String lastName;
     private LocalDate dob;
 
     @OneToMany(mappedBy = "teacher")
-    private List<Course> courses;
-
-    @OneToMany(mappedBy = "teacher")
     private List<TeachersStudents> teachersStudents;
 
-    public List<TeachersStudents> getTeachersStudents() {
-        return teachersStudents;
-    }
-
-    public void setTeachersStudents(List<TeachersStudents> teachersStudents) {
-        this.teachersStudents = teachersStudents;
-    }
+    @OneToMany(mappedBy = "teacher")
+    private List<Course> courses;
 
     public List<Course> getCourses() {
         return courses;
@@ -38,12 +30,20 @@ public class Teacher {
         this.courses = courses;
     }
 
-    public Long getId() {
-        return id;
+    public List<TeachersStudents> getTeachersStudents() {
+        return teachersStudents;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTeachersStudents(List<TeachersStudents> teachersStudents) {
+        this.teachersStudents = teachersStudents;
+    }
+
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getFirstName() {
@@ -69,4 +69,5 @@ public class Teacher {
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
+
 }

@@ -5,8 +5,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "courses")
 public class Course {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private Long courseId;
     private String title;
     private int sp;
 
@@ -14,21 +17,20 @@ public class Course {
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-
-    public Teacher getTeacher() {
-        return teacher;
+    public int getSp() {
+        return sp;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setSp(int sp) {
+        this.sp = sp;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCourseId(Long id) {
+        this.courseId = id;
     }
 
     public String getTitle() {
@@ -39,11 +41,11 @@ public class Course {
         this.title = title;
     }
 
-    public int getSp() {
-        return sp;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setSp(int sp) {
-        this.sp = sp;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 }

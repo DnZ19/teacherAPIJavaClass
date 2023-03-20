@@ -23,13 +23,6 @@ public class StudentController {
 
     }
 
-    @GetMapping("/{studentNr}")
-    public  ResponseEntity<StudentDto> getStudent(@PathVariable Long studentNr){
-        StudentDto sdto = service.getStudent(studentNr);
-
-        return ResponseEntity.ok(sdto);
-    }
-
     @PostMapping
     public ResponseEntity<Object> createStudent(@Valid @RequestBody StudentDto sdto, BindingResult br) {
 
@@ -49,6 +42,13 @@ public class StudentController {
 
         return ResponseEntity.created(uri).body(sdto);
 
+    }
+
+    @GetMapping("/{studentNr}")
+    public  ResponseEntity<StudentDto> getStudent(@PathVariable Long studentNr){
+        StudentDto sdto = service.getStudent(studentNr);
+
+        return ResponseEntity.ok(sdto);
     }
 
 //    @GetMapping("/nameSearch")

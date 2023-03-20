@@ -5,10 +5,12 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeacherDto {
 
-    public Long id;
+    public Long teacherId;
 
     @NotBlank
     public String firstName;
@@ -16,5 +18,7 @@ public class TeacherDto {
     public String lastName;
     @Past
     public LocalDate dob;
+
+    public List<String> courseTitles = new ArrayList<>();
 
 }

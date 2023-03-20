@@ -1,47 +1,56 @@
 package nl.novi.les11model.controller;
 
+
+import jakarta.validation.Valid;
 import nl.novi.les11model.dto.CourseDto;
-import nl.novi.les11model.model.Course;
-import nl.novi.les11model.model.Teacher;
 import nl.novi.les11model.repository.CourseRepository;
 import nl.novi.les11model.repository.TeacherRepository;
+import nl.novi.les11model.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("courses")
 public class CourseController {
 
-    private final CourseRepository courseRepos;
-    private final TeacherRepository teacherRepos;
+    private final CourseService service;
 
-    //ipv service
-    public CourseController(CourseRepository courseRepos, TeacherRepository teacherRepos) {
-        this.courseRepos = courseRepos;
-        this.teacherRepos = teacherRepos;
+    public CourseController(CourseService service){
+
+        this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<CourseDto> createCourse(@RequestBody CourseDto courseDto) {
+    public ResponseEntity<Object> createCourse(@Valid @RequestBody CourseDto cdto, BindingResult br){
 
-        Course course = new Course();
+        if (br.hasFieldErrors()){
+            StringBuilder sb = new StringBuilder();
+            for (FieldError fe : br.getFieldErrors()){
+                sb.append(fe.getField() + ": ");
+                sb.append(fe.getDefaultMessage() + "\n");
+            }
+            return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
+        }
 
-        //mapp
-        course.setTitle(courseDto.title);
-        course.setSp(courseDto.sp);
+        Long courseId = service.createCourse(cdto);
+        cdto.courseId = courseId;
 
-        Teacher teacher = teacherRepos.findById(courseDto.teacherId).get(); // happy flow
-        course.setTeacher(teacher);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + courseId).toUriString());
 
-        courseRepos.save(course);
-        courseDto.id = course.getId();
+        return ResponseEntity.created(uri).body(cdto);
+    }
 
-        return new ResponseEntity<>(courseDto, HttpStatus.CREATED);
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseDto> getCourse(@PathVariable Long courseId){
+        CourseDto cdto = service.getCourse(courseId);
 
+        return ResponseEntity.ok(cdto);
     }
 
 }
